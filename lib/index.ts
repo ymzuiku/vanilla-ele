@@ -47,6 +47,24 @@ interface IElePrototype {
   makeStyle: (obj: IStyle) => IStyle;
 }
 
+const agents = [
+  "android",
+  "iphone",
+  "windows phone",
+  "ipad",
+  "ipod"
+];
+
+let isPc = true;
+const ua = navigator.userAgent.toLowerCase();
+for (let v = 0; v < agents.length; v++) {
+  if (ua.indexOf(agents[v]) > 0) {
+    isPc = false;
+    break;
+  }
+}
+
+
 function future<K extends keyof HTMLElementTagNameMap>() {
   const state = {
     target: (null as any) as HTMLElementTagNameMap[K],
@@ -66,6 +84,9 @@ function future<K extends keyof HTMLElementTagNameMap>() {
 
 const propsEvents = {
   hover:(ele:HTMLElement, obj:IStyle)=>{
+    if (!isPc) {
+      return;
+    }
     let lastStyle = null as any;
     function enter(e:Event){
       lastStyle = {};
@@ -103,13 +124,15 @@ const propsEvents = {
       }
       lastStyle = null;
     }
-    ele.addEventListener('mouseenter', enter)
-    ele.addEventListener('touchstart', enter)
-
-    ele.addEventListener('mouseout', out);
-    ele.addEventListener('mouseleave', out);
-    ele.addEventListener('touchend', out);
-    ele.addEventListener('touchcancel', out);
+    if (isPc) {
+      ele.addEventListener('mouseenter', enter)
+      ele.addEventListener('mouseout', out);
+      ele.addEventListener('mouseleave', out);
+    } else {
+      ele.addEventListener('touchstart', enter)
+      ele.addEventListener('touchend', out);
+      ele.addEventListener('touchcancel', out);
+    }
   },
   style: (ele: HTMLElement, value: IStyle) => {
     if (value) {
