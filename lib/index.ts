@@ -26,8 +26,8 @@ export interface ICreateEleProps extends IEvents {
   classListAdd?: string[];
   classListRemove?: string[];
   classListReplace?: string[];
-  hover?: IStyle,
-  active?: IStyle,
+  hover?: IStyle;
+  active?: IStyle;
   [key: string]: any;
 }
 
@@ -47,13 +47,7 @@ interface IElePrototype {
   makeStyle: (obj: IStyle) => IStyle;
 }
 
-const agents = [
-  "android",
-  "iphone",
-  "windows phone",
-  "ipad",
-  "ipod"
-];
+const agents = ["android", "iphone", "windows phone", "ipad", "ipod"];
 
 let isPc = true;
 const ua = navigator.userAgent.toLowerCase();
@@ -63,7 +57,6 @@ for (let v = 0; v < agents.length; v++) {
     break;
   }
 }
-
 
 function future<K extends keyof HTMLElementTagNameMap>() {
   const state = {
@@ -83,54 +76,54 @@ function future<K extends keyof HTMLElementTagNameMap>() {
 }
 
 const propsEvents = {
-  hover:(ele:HTMLElement, obj:IStyle)=>{
+  hover: (ele: HTMLElement, obj: IStyle) => {
     if (!isPc) {
       return;
     }
     let lastStyle = null as any;
-    function enter(e:Event){
+    function enter(e: Event) {
       lastStyle = {};
-      Object.keys(obj).forEach(k=>{
+      Object.keys(obj).forEach(k => {
         lastStyle[k] = (ele as any).style[k];
         (ele as any).style[k] = obj[k];
       });
     }
-    function out(e:Event) {
+    function out(e: Event) {
       if (lastStyle) {
-        Object.keys(lastStyle).forEach(k=>{
-          (ele as any).style[k] = lastStyle[k]
-        })
+        Object.keys(lastStyle).forEach(k => {
+          (ele as any).style[k] = lastStyle[k];
+        });
       }
       lastStyle = null;
     }
-    ele.addEventListener('mouseenter', enter)
-    ele.addEventListener('mouseleave', out);
+    ele.addEventListener("mouseenter", enter);
+    ele.addEventListener("mouseleave", out);
   },
-  active:(ele:HTMLElement, obj:IStyle)=>{
+  active: (ele: HTMLElement, obj: IStyle) => {
     let lastStyle = null as any;
-    function enter(e:Event){
+    function enter(e: Event) {
       lastStyle = {};
-      Object.keys(obj).forEach(k=>{
+      Object.keys(obj).forEach(k => {
         lastStyle[k] = (ele as any).style[k];
         (ele as any).style[k] = obj[k];
       });
     }
-    function out(e:Event) {
+    function out(e: Event) {
       if (lastStyle) {
-        Object.keys(lastStyle).forEach(k=>{
-          (ele as any).style[k] = lastStyle[k]
-        })
+        Object.keys(lastStyle).forEach(k => {
+          (ele as any).style[k] = lastStyle[k];
+        });
       }
       lastStyle = null;
     }
     if (isPc) {
-      ele.addEventListener('mousedown', enter)
-      ele.addEventListener('mouseup', out);
-      ele.addEventListener('mouseleave', out);
+      ele.addEventListener("mousedown", enter);
+      ele.addEventListener("mouseup", out);
+      ele.addEventListener("mouseleave", out);
     } else {
-      ele.addEventListener('touchstart', enter)
-      ele.addEventListener('touchend', out);
-      ele.addEventListener('touchcancel', out);
+      ele.addEventListener("touchstart", enter);
+      ele.addEventListener("touchend", out);
+      ele.addEventListener("touchcancel", out);
     }
   },
   style: (ele: HTMLElement, value: IStyle) => {
