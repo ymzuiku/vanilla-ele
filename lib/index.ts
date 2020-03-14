@@ -104,7 +104,6 @@ const propsEvents = {
       lastStyle = null;
     }
     ele.addEventListener('mouseenter', enter)
-    ele.addEventListener('mouseout', out);
     ele.addEventListener('mouseleave', out);
   },
   active:(ele:HTMLElement, obj:IStyle)=>{
@@ -125,8 +124,8 @@ const propsEvents = {
       lastStyle = null;
     }
     if (isPc) {
-      ele.addEventListener('mouseenter', enter)
-      ele.addEventListener('mouseout', out);
+      ele.addEventListener('mousedown', enter)
+      ele.addEventListener('mouseup', out);
       ele.addEventListener('mouseleave', out);
     } else {
       ele.addEventListener('touchstart', enter)
