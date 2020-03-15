@@ -1,22 +1,75 @@
-import { IStyle } from "./interface.style";
-import { ICreateEleProps } from "./interfaces";
+import style, { IStyle } from "vanilla-style";
 
-
-const agents = ["android", "iphone", "windows phone", "ipad", "ipod"];
-
-let isPc = true;
-const ua = navigator.userAgent.toLowerCase();
-for (let v = 0; v < agents.length; v++) {
-  if (ua.indexOf(agents[v]) > 0) {
-    isPc = false;
-    break;
-  }
+export interface IEvents {
+  oninput?: (this: GlobalEventHandlers, ev: Event) => any;
+  onchange?: (this: GlobalEventHandlers, ev: Event) => any;
+  onfocus?: (this: GlobalEventHandlers, ev: FocusEvent) => any;
+  onblur?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  oncancel?: (this: GlobalEventHandlers, ev: Event) => any;
+  onscroll?: (this: GlobalEventHandlers, ev: Event) => any;
+  onwheel?: (this: GlobalEventHandlers, ev: WheelEvent) => any;
+  oncut?: (this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any;
+  oncopy?: (this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any;
+  onpaste?: (this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any;
+  onplay?: (this: GlobalEventHandlers, ev: Event) => any;
+  onpause?: (this: GlobalEventHandlers, ev: Event) => any;
+  onplaying?: (this: GlobalEventHandlers, ev: Event) => any;
+  onresize?: (this: GlobalEventHandlers, ev: UIEvent) => any;
+  onreset?: (this: GlobalEventHandlers, ev: Event) => any;
+  onselect?: (this: GlobalEventHandlers, ev: Event) => any;
+  onmousedown?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  onmouseenter?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  onmouseleave?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  onmouseout?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  onmouseup?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  ontouchcancel?: (this: GlobalEventHandlers, ev: TouchEvent) => any;
+  ontouchend?: (this: GlobalEventHandlers, ev: TouchEvent) => any;
+  ontouchstart?: (this: GlobalEventHandlers, ev: TouchEvent) => any;
+  ontransitionrun?: (this: GlobalEventHandlers, ev: TransitionEvent) => any;
+  ontransitionstart?: (this: GlobalEventHandlers, ev: TransitionEvent) => any;
+  ontransitionend?: (this: GlobalEventHandlers, ev: TransitionEvent) => any;
+  ontransitioncancel?: (this: GlobalEventHandlers, ev: TransitionEvent) => any;
+  onfullscreenchange?: (this: Element, ev: Event) => any;
+  onfullscreenerror?: (this: Element, ev: Event) => any;
+  oninvalid?: (this: GlobalEventHandlers, ev: Event) => any;
+  onkeydown?: (this: GlobalEventHandlers, ev: KeyboardEvent) => any;
+  onkeypress?: (this: GlobalEventHandlers, ev: KeyboardEvent) => any;
+  onkeyup?: (this: GlobalEventHandlers, ev: KeyboardEvent) => any;
+  onload?: (this: GlobalEventHandlers, ev: Event) => any;
+  onloadeddata?: (this: GlobalEventHandlers, ev: Event) => any;
+  onloadstart?: (this: GlobalEventHandlers, ev: Event) => any;
+  onloadedmetadata?: (this: GlobalEventHandlers, ev: Event) => any;
+  onprogress?: (this: GlobalEventHandlers, ev: ProgressEvent) => any;
+  onabort?: (this: GlobalEventHandlers, ev: UIEvent) => any;
+  onanimationcancel?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
+  onanimationend?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
+  onanimationiteration?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
+  onanimationstart?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
 }
 
-interface IElePrototype {
-  future: typeof future;
-  makeStyle: (obj: IStyle) => IStyle;
-  isPc: boolean,
+export interface ICreateEleProps extends IEvents {
+  textContent?: string;
+  style?: IStyle;
+  className?: string;
+  id?: string;
+  name?: string;
+  title?: string;
+  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  value?: string;
+  defaultValue?: string;
+  checked?: boolean;
+  autocomplete?: string;
+  defaultChecked?: boolean;
+  innerHTML?: string;
+  innerText?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  text?: string;
+  type?: string;
+  target?: string;
+  charset?: string;
+  src?: string;
+  [key: string]: any;
 }
 
 declare function IEle<T extends Element>(
@@ -30,10 +83,13 @@ declare function IEle<K extends keyof HTMLElementTagNameMap>(
   children?: HTMLElement[]
 ): HTMLElementTagNameMap[K];
 
+interface IElePrototype {
+  future: typeof future;
+  style: typeof style;
+}
 
-
-function future<K extends keyof HTMLElementTagNameMap>() {
-  const state = {
+function future<K extends keyof HTMLElementTagNameMap>(tag?: K) {
+  const data = {
     target: (null as any) as HTMLElementTagNameMap[K],
     Ele: function(
       tagName: K,
@@ -41,73 +97,13 @@ function future<K extends keyof HTMLElementTagNameMap>() {
       children?: HTMLElement[]
     ) {
       const target = Ele(tagName, props, children);
-      state.target = target;
+      data.target = target;
       return target;
     }
   };
 
-  return state;
+  return data;
 }
-
-const propsEvents = {
-  hover: (ele: HTMLElement, obj: IStyle) => {
-    if (!isPc) {
-      return;
-    }
-    let lastStyle = null as any;
-    function enter(e: Event) {
-      lastStyle = {};
-      Object.keys(obj).forEach(k => {
-        lastStyle[k] = (ele as any).style[k];
-        (ele as any).style[k] = obj[k];
-      });
-    }
-    function out(e: Event) {
-      if (lastStyle) {
-        Object.keys(lastStyle).forEach(k => {
-          (ele as any).style[k] = lastStyle[k];
-        });
-      }
-      lastStyle = null;
-    }
-    ele.addEventListener("mouseenter", enter);
-    ele.addEventListener("mouseleave", out);
-  },
-  active: (ele: HTMLElement, obj: IStyle) => {
-    let lastStyle = null as any;
-    function enter(e: Event) {
-      lastStyle = {};
-      Object.keys(obj).forEach(k => {
-        lastStyle[k] = (ele as any).style[k];
-        (ele as any).style[k] = obj[k];
-      });
-    }
-    function out(e: Event) {
-      if (lastStyle) {
-        Object.keys(lastStyle).forEach(k => {
-          (ele as any).style[k] = lastStyle[k];
-        });
-      }
-      lastStyle = null;
-    }
-    if (isPc) {
-      ele.addEventListener("mousedown", enter);
-      ele.addEventListener("mouseup", out);
-      ele.addEventListener("mouseleave", out);
-    } else {
-      ele.addEventListener("touchstart", enter);
-      ele.addEventListener("touchend", out);
-      ele.addEventListener("touchcancel", out);
-    }
-  },
-  style: (ele: HTMLElement, value: IStyle) => {
-    if (value) {
-      Object.keys(value).forEach(k => {
-        (ele as any).style[k] = value[k];
-      });
-    }
-  },
-};
 
 const Ele: typeof IEle & IElePrototype = (
   tagName: any,
@@ -121,9 +117,8 @@ const Ele: typeof IEle & IElePrototype = (
 
   if (props) {
     Object.keys(props).forEach(key => {
-      const fn = (propsEvents as any)[key];
-      if (fn) {
-        fn(ele, props[key]);
+      if (key === "style") {
+        style(props[key])(ele);
       } else {
         (ele as any)[key] = (props as any)[key];
       }
@@ -136,7 +131,6 @@ const Ele: typeof IEle & IElePrototype = (
 };
 
 Ele.future = future;
-Ele.makeStyle = obj => obj;
-Ele.isPc = isPc;
+Ele.style = style;
 
 export default Ele;

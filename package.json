@@ -1,6 +1,6 @@
 {
   "name": "vanilla-ele",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "main": "umd/index.js",
   "types": "umd/index.d.ts",
   "private": false,
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "git+https://github.com/ymzuiku/vanilla-ele.git"
   },
-  "homepage": "git+https://github.com/ymzuiku/vanilla-ele.git"
+  "homepage": "git+https://github.com/ymzuiku/vanilla-ele.git",
+  "dependencies": {
+    "vanilla-style": "^1.0.0"
+  }
 }
