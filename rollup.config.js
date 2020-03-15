@@ -37,7 +37,7 @@ const watchOptions = [
     output: {
       file: './umd/index.js',
       format: 'umd',
-      name: 'vanillaNavi',
+      name: 'vanillaEle',
       sourcemap: true,
       globals: {
         queryString: 'querystring-number',

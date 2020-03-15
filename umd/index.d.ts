@@ -22,9 +22,6 @@ export interface ICreateEleProps extends IEvents {
     target?: string;
     charset?: string;
     src?: string;
-    classListAdd?: string[];
-    classListRemove?: string[];
-    classListReplace?: string[];
     hover?: IStyle;
     active?: IStyle;
     [key: string]: any;

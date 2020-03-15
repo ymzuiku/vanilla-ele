@@ -23,9 +23,6 @@ export interface ICreateEleProps extends IEvents {
   target?: string;
   charset?: string;
   src?: string;
-  classListAdd?: string[];
-  classListRemove?: string[];
-  classListReplace?: string[];
   hover?: IStyle;
   active?: IStyle;
   [key: string]: any;
@@ -133,21 +130,6 @@ const propsEvents = {
       });
     }
   },
-  classListAdd: (ele: HTMLElement, value: string[]) => {
-    if (ele.classList) {
-      ele.classList.add(...value);
-    }
-  },
-  classListRemove: (ele: HTMLElement, value: string[]) => {
-    if (ele.classList) {
-      ele.classList.remove(...value);
-    }
-  },
-  classListReplace: (ele: any, value: string[]) => {
-    if (ele.classList) {
-      ele.classList.replace(...value);
-    }
-  }
 };
 
 const Ele: typeof IEle & IElePrototype = (
