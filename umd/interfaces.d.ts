@@ -1,3 +1,4 @@
+import { IStyle } from "./interface.style";
 export interface IEvents {
     oninput?: (this: GlobalEventHandlers, ev: Event) => any;
     onchange?: (this: GlobalEventHandlers, ev: Event) => any;
@@ -43,4 +44,30 @@ export interface IEvents {
     onanimationend?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
     onanimationiteration?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
     onanimationstart?: (this: GlobalEventHandlers, ev: AnimationEvent) => any;
+}
+export interface ICreateEleProps extends IEvents {
+    textContent?: string;
+    style?: IStyle;
+    className?: string;
+    id?: string;
+    name?: string;
+    title?: string;
+    onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+    value?: string;
+    defaultValue?: string;
+    checked?: boolean;
+    autocomplete?: string;
+    defaultChecked?: boolean;
+    innerHTML?: string;
+    innerText?: string;
+    placeholder?: string;
+    disabled?: boolean;
+    text?: string;
+    type?: string;
+    target?: string;
+    charset?: string;
+    src?: string;
+    hover?: IStyle;
+    active?: IStyle;
+    [key: string]: any;
 }

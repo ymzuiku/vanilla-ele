@@ -1,31 +1,22 @@
 import { IStyle } from "./interface.style";
-import { IEvents } from "./interface.event";
+import { ICreateEleProps } from "./interfaces";
 
-export interface ICreateEleProps extends IEvents {
-  textContent?: string;
-  style?: IStyle;
-  className?: string;
-  id?: string;
-  name?: string;
-  title?: string;
-  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
-  value?: string;
-  defaultValue?: string;
-  checked?: boolean;
-  autocomplete?: string;
-  defaultChecked?: boolean;
-  innerHTML?: string;
-  innerText?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  text?: string;
-  type?: string;
-  target?: string;
-  charset?: string;
-  src?: string;
-  hover?: IStyle;
-  active?: IStyle;
-  [key: string]: any;
+
+const agents = ["android", "iphone", "windows phone", "ipad", "ipod"];
+
+let isPc = true;
+const ua = navigator.userAgent.toLowerCase();
+for (let v = 0; v < agents.length; v++) {
+  if (ua.indexOf(agents[v]) > 0) {
+    isPc = false;
+    break;
+  }
+}
+
+interface IElePrototype {
+  future: typeof future;
+  makeStyle: (obj: IStyle) => IStyle;
+  isPc: boolean,
 }
 
 declare function IEle<T extends Element>(
@@ -39,21 +30,7 @@ declare function IEle<K extends keyof HTMLElementTagNameMap>(
   children?: HTMLElement[]
 ): HTMLElementTagNameMap[K];
 
-interface IElePrototype {
-  future: typeof future;
-  makeStyle: (obj: IStyle) => IStyle;
-}
 
-const agents = ["android", "iphone", "windows phone", "ipad", "ipod"];
-
-let isPc = true;
-const ua = navigator.userAgent.toLowerCase();
-for (let v = 0; v < agents.length; v++) {
-  if (ua.indexOf(agents[v]) > 0) {
-    isPc = false;
-    break;
-  }
-}
 
 function future<K extends keyof HTMLElementTagNameMap>() {
   const state = {
@@ -159,7 +136,7 @@ const Ele: typeof IEle & IElePrototype = (
 };
 
 Ele.future = future;
-
 Ele.makeStyle = obj => obj;
+Ele.isPc = isPc;
 
 export default Ele;
