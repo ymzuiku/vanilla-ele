@@ -1,14 +1,16 @@
-# vanilla-ele
+# vanilla-element
 
 ## Example:
 
 Easy create HTMLElement:
 
 ```js
+import vanillaElement from 'vanilla-ele';
+
 const buttonFuture = Ele.future()
 
-  const body = Ele("div", { className: bem`_body` }, [
-    Ele("div", {
+  const body = vanillaElement("div", { className: bem`_body` }, [
+    vanillaElement("div", {
       onclick: handleGoToUserClick,
       className: bem`_goToUser`,
       textContent: "go to user"
@@ -16,9 +18,9 @@ const buttonFuture = Ele.future()
     ...Array(50)
       .fill(0)
       .map((v, i) => {
-        return Ele("div", { textContent: "label" + i });
+        return vanillaElement("div", { textContent: "label" + i });
       }),
-    buttonFuture.Ele("div", {
+    buttonFuture.bindElement("div", {
       onclick: handleGoToUserClick,
       className: bem`_goToUser`,
       textContent: "go to user2"

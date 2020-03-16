@@ -67,6 +67,9 @@ export interface ICreateEleProps extends IEvents {
     target?: string;
     charset?: string;
     src?: string;
+    setAttribute?: {
+        [key: string]: string;
+    };
     [key: string]: any;
 }
 declare function IEle<T extends Element>(tagName: T, props?: ICreateEleProps, children?: HTMLElement[]): T;
@@ -77,7 +80,7 @@ interface IElePrototype {
 }
 declare function future<K extends keyof HTMLElementTagNameMap>(tag?: K): {
     target: HTMLElementTagNameMap[K];
-    Ele: (tagName: K, props?: ICreateEleProps | undefined, children?: HTMLElement[] | undefined) => HTMLElementTagNameMap[K];
+    bindElement: (tagName: K, props?: ICreateEleProps | undefined, children?: HTMLElement[] | undefined) => HTMLElementTagNameMap[K];
 };
-declare const Ele: typeof IEle & IElePrototype;
-export default Ele;
+declare const vanillaElement: typeof IEle & IElePrototype;
+export default vanillaElement;

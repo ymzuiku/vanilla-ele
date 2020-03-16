@@ -69,6 +69,7 @@ export interface ICreateEleProps extends IEvents {
   target?: string;
   charset?: string;
   src?: string;
+  setAttribute?: { [key: string]: string };
   [key: string]: any;
 }
 
@@ -91,12 +92,12 @@ interface IElePrototype {
 function future<K extends keyof HTMLElementTagNameMap>(tag?: K) {
   const data = {
     target: (null as any) as HTMLElementTagNameMap[K],
-    Ele: function(
+    bindElement: function(
       tagName: K,
       props?: ICreateEleProps,
       children?: HTMLElement[]
     ) {
-      const target = Ele(tagName, props, children);
+      const target = vanillaElement(tagName, props, children);
       data.target = target;
       return target;
     }
@@ -105,7 +106,7 @@ function future<K extends keyof HTMLElementTagNameMap>(tag?: K) {
   return data;
 }
 
-const Ele: typeof IEle & IElePrototype = (
+const vanillaElement: typeof IEle & IElePrototype = (
   tagName: any,
   props: any,
   children: any
@@ -117,10 +118,15 @@ const Ele: typeof IEle & IElePrototype = (
 
   if (props) {
     Object.keys(props).forEach(key => {
+      const value = props[key];
       if (key === "style") {
-        style(props[key])(ele);
+        style(value)(ele);
+      } else if (key === "setAttribute") {
+        Object.keys(value).forEach(k => {
+          ele.setAttribute(k, value[k]);
+        });
       } else {
-        (ele as any)[key] = (props as any)[key];
+        (ele as any)[key] = value;
       }
     });
   }
@@ -130,7 +136,7 @@ const Ele: typeof IEle & IElePrototype = (
   return ele;
 };
 
-Ele.future = future;
-Ele.style = style;
+vanillaElement.future = future;
+vanillaElement.style = style;
 
-export default Ele;
+export default vanillaElement;

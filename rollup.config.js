@@ -38,7 +38,7 @@ const watchOptions = [
     output: {
       file: "./umd/index.js",
       format: "umd",
-      name: "vanillaEle",
+      name: "vanillaElement",
       sourcemap: true,
       // globals: {
       //   style: "vanilla-style"

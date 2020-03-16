@@ -1,6 +1,6 @@
 {
-  "name": "vanilla-ele",
-  "version": "0.5.4",
+  "name": "vanilla-element",
+  "version": "0.5.5",
   "main": "umd/index.js",
   "types": "umd/index.d.ts",
   "private": false,
